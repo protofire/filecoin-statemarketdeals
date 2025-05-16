@@ -1,11 +1,13 @@
-NETWORK=calibration
+NETWORK=mainnet
 
+# Must match the version of the lotus full node
+LOTUS_VERSION=v1.32.3
 
 KUBERNETES_NAMESPACE=default
-DOCKER_TAG=docker.io/glif/lotus:statemarketdeals
+DOCKER_TAG=docker.io/glif/lotus:statemarketdeals-$(LOTUS_VERSION)
 
 build:
-	docker build . -t $(DOCKER_TAG)
+	docker build . -t $(DOCKER_TAG) --build-arg LOTUS_VERSION=$(LOTUS_VERSION)
 
 push:
 	docker push $(DOCKER_TAG)

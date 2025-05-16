@@ -1,3 +1,6 @@
+# Must match the version of the rpcFullnode
+image: glif/lotus:statemarketdeals-v1.32.3
+
 s3Bucket: marketdeals
 serviceAccountName: cid-checker-marketdeals-sync-s3-sa
 rpcFullnode: http://api-read-cid-checker-lotus-service.network:1234

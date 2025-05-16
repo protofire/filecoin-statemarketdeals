@@ -1,3 +1,6 @@
+# Must match the version of the rpcFullnode
+image: glif/lotus:statemarketdeals-v1.32.2
+
 s3Bucket: marketdeals-calibration
 serviceAccountName: cid-checker-marketdeals-calibration-sync-s3-sa
 rpcFullnode: http://calibrationapi-archive-node-lotus-service.network:1234
