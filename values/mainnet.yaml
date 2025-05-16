@@ -1,0 +1,3 @@
+s3Bucket: marketdeals
+serviceAccountName: cid-checker-marketdeals-sync-s3-sa
+rpcFullnode: http://api-read-cid-checker-lotus-service.network:1234

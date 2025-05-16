@@ -1,0 +1,15 @@
+image: glif/lotus:statemarketdeals
+imagePullPolicy: Always
+
+fileName: StateMarketDeals-test.json
+rpcFullnode: http://calibrationapi-archive-node-lotus-service.network:1234
+s3Bucket: marketdeals-calibration
+cronSchedule: "@every 1h"
+
+serviceAccountName: ""
+
+nodeSelector:
+  kubernetes.io/arch: amd64
+
+affinity: {}
+tolerations: []

@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  schedule: "{{ .Values.cronSchedule }}"
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 1200
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: {{ .Values.serviceAccountName }}
+          containers:
+            - name: filecoin-statemarketdeals
+              image: {{ .Values.image }}
+              imagePullPolicy: {{ .Values.imagePullPolicy }}
+              env:
+                - name: FILE_NAME
+                  value: {{ .Values.fileName }}
+                - name: RPC_FULLNODE
+                  value: {{ .Values.rpcFullnode }}
+                - name: S3_BUCKET
+                  value: {{ .Values.s3Bucket }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

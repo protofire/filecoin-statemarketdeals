@@ -1,0 +1,10 @@
+apiVersion: v2
+name: filecoin-statemarketdeals
+description: Helm Chart for Filecoin to get StateMarketDeals JSON dump, compress and upload to S3
+version: 0.0.1
+type: application
+
+maintainers:
+  - name: Chain Love
+
+appVersion: 0.0.1
