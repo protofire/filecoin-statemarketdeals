@@ -3,4 +3,4 @@ image: glif/lotus:statemarketdeals-v1.32.3
 
 s3Bucket: marketdeals
 serviceAccountName: cid-checker-marketdeals-sync-s3-sa
-rpcFullnode: http://api-read-cid-checker-lotus-service.network:1234
+rpcFullnode: http://space07-lotus-service.network:1234

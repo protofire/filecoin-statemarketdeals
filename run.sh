@@ -37,7 +37,8 @@ echo "Uploading $COMPRESSED_FILE_NAME ($FILE_SIZE bytes) to $BUCKET_NAME/$COMPRE
 START_TIME=$(date +%s.%N)
 aws s3 cp $COMPRESSED_FILE_NAME s3://$BUCKET_NAME/$COMPRESSED_FILE_NAME \
     --expected-size $FILE_SIZE \
-    --only-show-errors
+    --only-show-errors \
+    --acl public-read
 # Check if upload succeeded
 if [ $? -eq 0 ]; then
   echo "Upload completed successfully."

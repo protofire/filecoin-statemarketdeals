@@ -7,7 +7,7 @@ KUBERNETES_NAMESPACE=default
 DOCKER_TAG=docker.io/glif/lotus:statemarketdeals-$(LOTUS_VERSION)
 
 build:
-	docker build . -t $(DOCKER_TAG) --build-arg LOTUS_VERSION=$(LOTUS_VERSION)
+	docker build . -t $(DOCKER_TAG) --build-arg LOTUS_VERSION=$(LOTUS_VERSION) --no-cache
 
 push:
 	docker push $(DOCKER_TAG)
