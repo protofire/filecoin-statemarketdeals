@@ -6,6 +6,4 @@ It uses [filexp](https://github.com/aschmahmann/filexp) to dump the JSON file an
 
 ## TODO:
 
-- Add support for calibnet
 - Remove CID Checker
-- Change file name to StateMarketDeals.json

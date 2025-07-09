@@ -1,5 +1,5 @@
 # Must match the version of the rpcFullnode
-image: glif/lotus:statemarketdeals-v1.33.0
+image: glif/lotus:statemarketdeals-v1.33.0-calibration
 
 s3Bucket: marketdeals-calibration
 serviceAccountName: cid-checker-marketdeals-calibration-sync-s3-sa
