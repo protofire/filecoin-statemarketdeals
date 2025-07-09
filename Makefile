@@ -6,8 +6,12 @@ LOTUS_VERSION=v1.33.0
 KUBERNETES_NAMESPACE=default
 DOCKER_TAG=docker.io/glif/lotus:statemarketdeals-$(LOTUS_VERSION)-$(NETWORK)
 
+ifeq ($(NETWORK),calibration)
+	GOFLAGS=-tags=calibnet
+endif
+
 build:
-	docker build . -t $(DOCKER_TAG) --build-arg LOTUS_VERSION=$(LOTUS_VERSION) --build-arg NETWORK=$(NETWORK) --no-cache
+	docker build . -t $(DOCKER_TAG) --build-arg GOFLAGS=$(GOFLAGS) --build-arg LOTUS_VERSION=$(LOTUS_VERSION) --build-arg NETWORK=$(NETWORK) --no-cache
 
 push:
 	docker push $(DOCKER_TAG)

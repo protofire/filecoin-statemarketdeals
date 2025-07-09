@@ -2,7 +2,7 @@ FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS filexp-build
 
 ARG TARGETOS
 ARG TARGETARCH
-ARG NETWORK
+ARG GOFLAGS
 
 RUN apk add --no-cache upx git
 
@@ -12,10 +12,7 @@ WORKDIR /filexp
 
 # Target lotus version, example: v1.32.3
 ARG LOTUS_VERSION
-RUN if [ "$NETWORK" != "mainnet" ]; then \
-        export GOFLAGS="-tags=${NETWORK}"; \
-    fi && \
-go get github.com/filecoin-project/lotus@${LOTUS_VERSION} && go mod tidy
+RUN go get github.com/filecoin-project/lotus@${LOTUS_VERSION} && go mod tidy
 
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg \
