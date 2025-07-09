@@ -1,7 +1,7 @@
 NETWORK=mainnet
 
 # Must match the version of the lotus full node
-LOTUS_VERSION=v1.32.3
+LOTUS_VERSION=v1.33.0
 
 KUBERNETES_NAMESPACE=default
 DOCKER_TAG=docker.io/glif/lotus:statemarketdeals-$(LOTUS_VERSION)
