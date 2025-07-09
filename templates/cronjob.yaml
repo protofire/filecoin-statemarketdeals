@@ -21,6 +21,8 @@ spec:
               env:
                 - name: FILE_NAME
                   value: {{ .Values.fileName }}
+                - name: VERIFIED_FILE_NAME
+                  value: {{ .Values.verifiedFileName }}
                 - name: RPC_FULLNODE
                   value: {{ .Values.rpcFullnode }}
                 - name: BUCKET_NAME

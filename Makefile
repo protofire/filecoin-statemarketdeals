@@ -1,4 +1,4 @@
-NETWORK=mainnet
+NETWORK=calibration
 
 # Must match the version of the lotus full node
 LOTUS_VERSION=v1.33.0
