@@ -6,7 +6,7 @@ ARG GOFLAGS
 
 RUN apk add --no-cache upx git
 
-RUN git clone https://github.com/protofire/filexp.git -b f05dump-logs /filexp --recurse-submodules
+RUN git clone https://github.com/aschmahmann/filexp.git -b main /filexp --recurse-submodules
 
 WORKDIR /filexp
 
