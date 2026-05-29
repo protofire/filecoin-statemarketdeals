@@ -11,3 +11,7 @@ nodeSelector:
 affinity: {}
 tolerations: []
 logLevel: warn
+disableSingleDocument: false
+s3Bucket: ""
+rpcFullnode: ""
+image: ""

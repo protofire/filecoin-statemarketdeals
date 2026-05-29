@@ -1,7 +1,8 @@
 NETWORK=calibration
+VALUES_FILE=calibration
 
 # Must match the version of the lotus full node
-LOTUS_VERSION=v1.34.0-rc2
+LOTUS_VERSION=v1.36.0
 
 KUBERNETES_NAMESPACE=default
 DOCKER_TAG=docker.io/glif/lotus:statemarketdeals-$(LOTUS_VERSION)-$(NETWORK)
@@ -20,23 +21,23 @@ diff:
 	helm diff upgrade --install \
 		--namespace $(KUBERNETES_NAMESPACE) \
 		--values values.yaml \
-		--values values/$(NETWORK).yaml \
-		filecoin-statemarketdeals-$(NETWORK) \
+		--values values/$(VALUES_FILE).yaml \
+		filecoin-statemarketdeals-$(VALUES_FILE) \
 		.
 
 install:
 	helm upgrade --install \
 		--namespace $(KUBERNETES_NAMESPACE) \
 		--values values.yaml \
-		--values values/$(NETWORK).yaml \
-		filecoin-statemarketdeals-$(NETWORK) \
+		--values values/$(VALUES_FILE).yaml \
+		filecoin-statemarketdeals-$(VALUES_FILE) \
 		.
 
 delete:
-	helm delete filecoin-statemarketdeals-$(NETWORK)
+	helm delete filecoin-statemarketdeals-$(VALUES_FILE)
 
 start:
 	kubectl create job \
 		--namespace $(KUBERNETES_NAMESPACE) \
-		--from=cronjob/filecoin-statemarketdeals-$(NETWORK) \
-		test-statemarketdeals-$(NETWORK)
+		--from=cronjob/filecoin-statemarketdeals-$(VALUES_FILE) \
+		test-statemarketdeals-$(VALUES_FILE)

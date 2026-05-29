@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS filexp-build
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS filexp-build
 
 ARG TARGETOS
 ARG TARGETARCH

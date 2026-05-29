@@ -6,13 +6,22 @@ if [ -z "$FILE_NAME" ] || [ -z "$RPC_FULLNODE" ] || [ -z "$BUCKET_NAME" ]; then
   exit 1
 fi
 
+# Handle DISABLE_SINGLE_DOCUMENT
+FILEXP_FLAGS=""
+if [ "$DISABLE_SINGLE_DOCUMENT" = "true" ]; then
+  # Replace .json with .ndjson
+  FILE_NAME="${FILE_NAME%.json}.ndjson"
+else
+  FILEXP_FLAGS="--single-document"
+fi
+
 # Produce MarketDeals JSON files
 echo "Producing $FILE_NAME using $RPC_FULLNODE"
 START_TIME=$(date +%s.%N)
 
 filexp dump-statemarketdeals \
-    --single-document \
-    --rpc-fullnode=$RPC_FULLNODE > $FILE_NAME
+    $FILEXP_FLAGS \
+    --rpc-fullnode="$RPC_FULLNODE" > "$FILE_NAME"
 
 if [ $? -ne 0 ]; then
   echo "filexp command failed. Exiting."
@@ -23,10 +32,10 @@ END_TIME=$(date +%s.%N)
 echo "Producing JSON file(s) took: $(echo "$END_TIME - $START_TIME" | bc -l) seconds"
 
 # Compress original file
-COMPRESSED_FILE_NAME=$FILE_NAME.zst
+COMPRESSED_FILE_NAME="$FILE_NAME.zst"
 echo "Compressing $FILE_NAME to $COMPRESSED_FILE_NAME"
 START_TIME=$(date +%s.%N)
-zstd -o $COMPRESSED_FILE_NAME $FILE_NAME
+zstd -o "$COMPRESSED_FILE_NAME" "$FILE_NAME"
 if [ $? -ne 0 ]; then
   echo "Compression of $FILE_NAME failed. Exiting."
   exit 1
@@ -38,12 +47,12 @@ echo "Compressing $FILE_NAME took: $(echo "$END_TIME - $START_TIME" | bc -l) sec
 aws configure set default.s3.multipart_threshold 64MB
 aws configure set default.s3.multipart_chunksize 64MB
 
-# Upload original file
-FILE_SIZE=$(stat -c%s $COMPRESSED_FILE_NAME)
+# Upload compressed file
+FILE_SIZE=$(stat -c%s "$COMPRESSED_FILE_NAME")
 echo "Uploading $COMPRESSED_FILE_NAME ($FILE_SIZE bytes) to $BUCKET_NAME/$COMPRESSED_FILE_NAME"
 START_TIME=$(date +%s.%N)
-aws s3 cp $COMPRESSED_FILE_NAME s3://$BUCKET_NAME/$COMPRESSED_FILE_NAME \
-    --expected-size $FILE_SIZE \
+aws s3 cp "$COMPRESSED_FILE_NAME" "s3://$BUCKET_NAME/$COMPRESSED_FILE_NAME" \
+    --expected-size "$FILE_SIZE" \
     --only-show-errors \
     --acl public-read
 if [ $? -eq 0 ]; then
