@@ -25,8 +25,10 @@ FROM --platform=$BUILDPLATFORM alpine:3.21 AS runtime
 
 RUN apk add --no-cache aws-cli zstd
 
+WORKDIR /filexp
+
 COPY --from=filexp-build /filexp/filexp /usr/local/bin/filexp
 
-COPY ./run.sh /run.sh
+COPY ./run.sh /filexp/run.sh
 
-CMD [ "sh", "/run.sh" ]
+CMD [ "sh", "/filexp/run.sh" ]

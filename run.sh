@@ -35,7 +35,7 @@ echo "Producing JSON file(s) took: $(echo "$END_TIME - $START_TIME" | bc -l) sec
 COMPRESSED_FILE_NAME="$FILE_NAME.zst"
 echo "Compressing $FILE_NAME to $COMPRESSED_FILE_NAME"
 START_TIME=$(date +%s.%N)
-zstd -o "$COMPRESSED_FILE_NAME" "$FILE_NAME"
+zstd -f -o "$COMPRESSED_FILE_NAME" "$FILE_NAME"
 if [ $? -ne 0 ]; then
   echo "Compression of $FILE_NAME failed. Exiting."
   exit 1
