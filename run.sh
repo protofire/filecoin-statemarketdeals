@@ -15,13 +15,18 @@ else
   FILEXP_FLAGS="--single-document"
 fi
 
+TEMP_FILE_NAME=$(mktemp "$FILE_NAME.tmp.XXXXXX") || exit 1
+TEMP_COMPRESSED_FILE_NAME="$TEMP_FILE_NAME.zst"
+trap 'rm -f "$TEMP_FILE_NAME" "$TEMP_COMPRESSED_FILE_NAME"' 0
+trap 'exit 1' HUP INT TERM
+
 # Produce MarketDeals JSON files
 echo "Producing $FILE_NAME using $RPC_FULLNODE"
 START_TIME=$(date +%s.%N)
 
 filexp dump-statemarketdeals \
     $FILEXP_FLAGS \
-    --rpc-fullnode="$RPC_FULLNODE" > "$FILE_NAME"
+    --rpc-fullnode="$RPC_FULLNODE" > "$TEMP_FILE_NAME"
 
 if [ $? -ne 0 ]; then
   echo "filexp command failed. Exiting."
@@ -35,13 +40,26 @@ echo "Producing JSON file(s) took: $(echo "$END_TIME - $START_TIME" | bc -l) sec
 COMPRESSED_FILE_NAME="$FILE_NAME.zst"
 echo "Compressing $FILE_NAME to $COMPRESSED_FILE_NAME"
 START_TIME=$(date +%s.%N)
-zstd -f -o "$COMPRESSED_FILE_NAME" "$FILE_NAME"
+zstd -f -o "$TEMP_COMPRESSED_FILE_NAME" "$TEMP_FILE_NAME"
 if [ $? -ne 0 ]; then
   echo "Compression of $FILE_NAME failed. Exiting."
   exit 1
 fi
 END_TIME=$(date +%s.%N)
 echo "Compressing $FILE_NAME took: $(echo "$END_TIME - $START_TIME" | bc -l) seconds"
+
+# Temporary files are private until they are ready for HTTP downloads.
+if ! chmod 644 "$TEMP_FILE_NAME" "$TEMP_COMPRESSED_FILE_NAME"; then
+  echo "Setting export permissions failed. Exiting."
+  exit 1
+fi
+
+# Renaming within the same directory keeps each published file complete.
+if ! mv -f "$TEMP_FILE_NAME" "$FILE_NAME" || \
+   ! mv -f "$TEMP_COMPRESSED_FILE_NAME" "$COMPRESSED_FILE_NAME"; then
+  echo "Publishing $FILE_NAME failed. Exiting."
+  exit 1
+fi
 
 # Configure AWS CLI for optimal performance
 aws configure set default.s3.multipart_threshold 64MB
