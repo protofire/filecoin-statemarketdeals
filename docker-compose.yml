@@ -18,7 +18,7 @@ volumes:
 services:
   mainnet:
     image: ${IMAGE_MAINNET}
-    restart: always
+    restart: no
     environment:
       FILE_NAME: ${FILE_NAME}
       RPC_FULLNODE: ${RPC_FULLNODE_MAINNET}
@@ -35,7 +35,7 @@ services:
 
   mainnet-ndjson:
     image: ${IMAGE_MAINNET}
-    restart: always
+    restart: no
     environment:
       FILE_NAME: ${FILE_NAME}
       RPC_FULLNODE: ${RPC_FULLNODE_MAINNET}
@@ -52,7 +52,7 @@ services:
   
   calibration:
     image: ${IMAGE_CALIBRATION}
-    restart: always
+    restart: no
     environment:
       FILE_NAME: ${FILE_NAME}
       RPC_FULLNODE: ${RPC_FULLNODE_CALIBRATION}
@@ -69,7 +69,7 @@ services:
   
   calibration-ndjson:
     image: ${IMAGE_CALIBRATION}
-    restart: always
+    restart: no
     environment:
       FILE_NAME: ${FILE_NAME}
       RPC_FULLNODE: ${RPC_FULLNODE_CALIBRATION}

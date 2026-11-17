@@ -1,8 +1,8 @@
-NETWORK=calibration
+NETWORK=mainnet
 VALUES_FILE=calibration
 
 # Must match the version of the lotus full node
-LOTUS_VERSION=v1.36.0
+LOTUS_VERSION=v1.37.0
 
 KUBERNETES_NAMESPACE=default
 DOCKER_TAG=docker.io/glif/lotus:statemarketdeals-$(LOTUS_VERSION)-$(NETWORK)

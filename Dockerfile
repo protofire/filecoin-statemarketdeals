@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS filexp-build
+FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS filexp-build
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -6,7 +6,7 @@ ARG GOFLAGS
 
 RUN apk add --no-cache upx git
 
-RUN git clone https://github.com/aschmahmann/filexp.git -b main /filexp --recurse-submodules
+RUN git clone https://github.com/aschmahmann/filexp.git -b feat/nv29 /filexp --recurse-submodules
 
 WORKDIR /filexp
 
